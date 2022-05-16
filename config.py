@@ -12,7 +12,7 @@ COLUMNS = 7
 
 # discs
 DISC_SIZE = 80
-DISC_RADIUS = int(DISC_SIZE / 2)
+DISC_RADIUS = int(DISC_SIZE / 2 - 10)
 
 # additional data
 PLAYER = 0

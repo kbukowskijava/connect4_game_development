@@ -26,7 +26,7 @@ def draw_grid(grid):
 
     for c in range(COLUMNS):
         for r in range(ROWS):
-            if grid[r][c] == REAL_PLAYER_PIECE:
+            if grid[r][c] == PLAYER_PIECE:
                 pg.draw.circle(screen, RED, (int(c * DISC_SIZE + DISC_SIZE / 2),
                                              height - int(r * DISC_SIZE + DISC_SIZE / 2)), DISC_RADIUS)
             elif grid[r][c] == AI_PLAYER_PIECE:
@@ -67,8 +67,8 @@ def search_win_move(grid, piece):
 
 def rate_score(window, piece):
     score = 0
-    opp_piece = REAL_PLAYER_PIECE
-    if piece == REAL_PLAYER_PIECE:
+    opp_piece = PLAYER_PIECE
+    if piece == PLAYER_PIECE:
         opp_piece = AI_PLAYER_PIECE
 
     if window.count(piece) == 4:
@@ -117,7 +117,7 @@ def total_score(grid, piece):
 
 
 def is_terminal_node(grid):
-    return search_win_move(grid, REAL_PLAYER_PIECE) or search_win_move(grid, AI_PLAYER_PIECE) or len(
+    return search_win_move(grid, PLAYER_PIECE) or search_win_move(grid, AI_PLAYER_PIECE) or len(
         get_valid_position(grid)) == 0
 
 
@@ -128,7 +128,7 @@ def minimax(grid, depth, alpha, beta, max_player):
         if terminal:
             if search_win_move(grid, AI_PLAYER_PIECE):
                 return (None, 10 ** 14)
-            elif search_win_move(grid, REAL_PLAYER_PIECE):
+            elif search_win_move(grid, PLAYER_PIECE):
                 return (None, -(10 ** 13))
             else:
                 return (None, 0)
@@ -156,7 +156,7 @@ def minimax(grid, depth, alpha, beta, max_player):
         for col in valid_position:
             row = get_next_open_row(grid, col)
             grid_copy = grid.copy()
-            grid_copy[row][col] = REAL_PLAYER_PIECE
+            grid_copy[row][col] = PLAYER_PIECE
             new_score = minimax(grid_copy, depth - 1, alpha, beta, True)[1]
             if new_score < value:
                 value = new_score
@@ -201,13 +201,13 @@ def main():
             elif event.type == pg.QUIT:
                 sys.exit()
             if event.type == pg.MOUSEMOTION:
-                pg.draw.rect(screen, WHITE, (0, 0), width, DISC_SIZE)
+                pg.draw.rect(screen, WHITE, (0, 0, width, DISC_SIZE))
                 position_x = event.pos[0]
                 if pick_random == PLAYER:
                     pg.draw.circle(screen, RED, (position_x, int(DISC_SIZE / 2)), DISC_RADIUS)
                     pg.display.update()
             if event.type == pg.MOUSEBUTTONDOWN:
-                pg.draw.rect(screen, WHITE, (0, 0), width, DISC_SIZE)
+                pg.draw.rect(screen, WHITE, (0, 0, width, DISC_SIZE))
                 if pick_random == PLAYER:
                     position_x = event.pos[0]
                     col = int(math.floor(position_x / DISC_SIZE))
